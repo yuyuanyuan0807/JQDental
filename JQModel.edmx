@@ -1,0 +1,730 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="jqdentaldbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ACCOUNT">
+          <Key>
+            <PropertyRef Name="Account_ID" />
+          </Key>
+          <Property Name="Account_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Account_Balance" Type="money" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="APPOINTMENT">
+          <Key>
+            <PropertyRef Name="Appointment_ID" />
+          </Key>
+          <Property Name="Appointment_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Dentist_ID" Type="int" />
+          <Property Name="Patient_ID" Type="int" />
+          <Property Name="Appointment_Date" Type="datetime2" Precision="0" />
+          <Property Name="Appointment_Time" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="COMPLETED_SERVICE">
+          <Key>
+            <PropertyRef Name="Completed_Service_ID" />
+          </Key>
+          <Property Name="Completed_Service_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Service_ID" Type="int" />
+          <Property Name="Visit_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="DENTIST">
+          <Key>
+            <PropertyRef Name="Dentist_ID" />
+          </Key>
+          <Property Name="Dentist_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Dentist_First_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Dentist_Middle_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Dentist_Last_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Dentist_Join_Date" Type="datetime2" Precision="0" />
+        </EntityType>
+        <EntityType Name="PATIENT">
+          <Key>
+            <PropertyRef Name="Patient_ID" />
+          </Key>
+          <Property Name="Patient_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Account_ID" Type="int" />
+          <Property Name="Patient_First_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Patient_Middle_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Patient_Last_Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Patient_Street" Type="nvarchar" MaxLength="50" />
+          <Property Name="Patient_City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Patient_State" Type="nvarchar" MaxLength="2" />
+          <Property Name="Patient_Zip" Type="nvarchar" MaxLength="10" />
+          <Property Name="Patient_Phone_Primary" Type="nvarchar" MaxLength="10" />
+          <Property Name="Patient_Phone_Secondary" Type="nvarchar" MaxLength="10" />
+          <Property Name="Patient_SSN" Type="nvarchar" MaxLength="9" />
+          <Property Name="Patient_DOB" Type="datetime2" Precision="0" />
+          <Property Name="Patient_Minor" Type="bit" />
+          <Property Name="Patient_Head_Of_House" Type="nvarchar" MaxLength="50" />
+          <Property Name="Patient_Allergies" Type="nvarchar(max)" />
+          <Property Name="SSMA_TimeStamp" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PAYMENT">
+          <Key>
+            <PropertyRef Name="Payment_ID" />
+          </Key>
+          <Property Name="Payment_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Payment_Date" Type="datetime2" Precision="0" />
+          <Property Name="Payment_Amount" Type="money" />
+          <Property Name="Account_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="SCHEDULED_SERVICE">
+          <Key>
+            <PropertyRef Name="Scheduled_Service_ID" />
+          </Key>
+          <Property Name="Scheduled_Service_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Appointment_ID" Type="int" />
+          <Property Name="Service_ID" Type="int" />
+        </EntityType>
+        <EntityType Name="SERVICE">
+          <Key>
+            <PropertyRef Name="Service_ID" />
+          </Key>
+          <Property Name="Service_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Service_Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Service_Cost" Type="money" />
+        </EntityType>
+        <EntityType Name="VISIT">
+          <Key>
+            <PropertyRef Name="Visit_ID" />
+          </Key>
+          <Property Name="Visit_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Dentist_ID" Type="int" />
+          <Property Name="Patient_ID" Type="int" />
+          <Property Name="Visit_Date" Type="datetime2" Precision="0" />
+          <Property Name="Visit_Time" Type="datetime2" Precision="0" />
+        </EntityType>
+        <Association Name="APPOINTMENT$DENTISTAPPOINTMENT">
+          <End Role="DENTIST" Type="Self.DENTIST" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="APPOINTMENT" Type="Self.APPOINTMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DENTIST">
+              <PropertyRef Name="Dentist_ID" />
+            </Principal>
+            <Dependent Role="APPOINTMENT">
+              <PropertyRef Name="Dentist_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="APPOINTMENT$PATIENTAPPOINTMENT">
+          <End Role="PATIENT" Type="Self.PATIENT" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="APPOINTMENT" Type="Self.APPOINTMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PATIENT">
+              <PropertyRef Name="Patient_ID" />
+            </Principal>
+            <Dependent Role="APPOINTMENT">
+              <PropertyRef Name="Patient_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="COMPLETED_SERVICE$SERVICECOMPLETED_SERVICE">
+          <End Role="SERVICE" Type="Self.SERVICE" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="COMPLETED_SERVICE" Type="Self.COMPLETED_SERVICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SERVICE">
+              <PropertyRef Name="Service_ID" />
+            </Principal>
+            <Dependent Role="COMPLETED_SERVICE">
+              <PropertyRef Name="Service_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="COMPLETED_SERVICE$VISITCOMPLETED_SERVICE">
+          <End Role="VISIT" Type="Self.VISIT" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="COMPLETED_SERVICE" Type="Self.COMPLETED_SERVICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VISIT">
+              <PropertyRef Name="Visit_ID" />
+            </Principal>
+            <Dependent Role="COMPLETED_SERVICE">
+              <PropertyRef Name="Visit_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PATIENT$ACCOUNTPATIENT">
+          <End Role="ACCOUNT" Type="Self.ACCOUNT" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PATIENT" Type="Self.PATIENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACCOUNT">
+              <PropertyRef Name="Account_ID" />
+            </Principal>
+            <Dependent Role="PATIENT">
+              <PropertyRef Name="Account_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PAYMENT$ACCOUNTPAYMENT">
+          <End Role="ACCOUNT" Type="Self.ACCOUNT" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PAYMENT" Type="Self.PAYMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACCOUNT">
+              <PropertyRef Name="Account_ID" />
+            </Principal>
+            <Dependent Role="PAYMENT">
+              <PropertyRef Name="Account_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SCHEDULED_SERVICE$APPOINTMENTSCHEDULED_SERVICE">
+          <End Role="APPOINTMENT" Type="Self.APPOINTMENT" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SCHEDULED_SERVICE" Type="Self.SCHEDULED_SERVICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APPOINTMENT">
+              <PropertyRef Name="Appointment_ID" />
+            </Principal>
+            <Dependent Role="SCHEDULED_SERVICE">
+              <PropertyRef Name="Appointment_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SCHEDULED_SERVICE$SERVICESCHEDULED_SERVICE">
+          <End Role="SERVICE" Type="Self.SERVICE" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SCHEDULED_SERVICE" Type="Self.SCHEDULED_SERVICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SERVICE">
+              <PropertyRef Name="Service_ID" />
+            </Principal>
+            <Dependent Role="SCHEDULED_SERVICE">
+              <PropertyRef Name="Service_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="VISIT$DENTISTVISIT">
+          <End Role="DENTIST" Type="Self.DENTIST" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="VISIT" Type="Self.VISIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DENTIST">
+              <PropertyRef Name="Dentist_ID" />
+            </Principal>
+            <Dependent Role="VISIT">
+              <PropertyRef Name="Dentist_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="VISIT$PATIENTVISIT">
+          <End Role="PATIENT" Type="Self.PATIENT" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="VISIT" Type="Self.VISIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PATIENT">
+              <PropertyRef Name="Patient_ID" />
+            </Principal>
+            <Dependent Role="VISIT">
+              <PropertyRef Name="Patient_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="jqdentaldbModelStoreContainer">
+          <EntitySet Name="ACCOUNT" EntityType="Self.ACCOUNT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="APPOINTMENT" EntityType="Self.APPOINTMENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="COMPLETED_SERVICE" EntityType="Self.COMPLETED_SERVICE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DENTIST" EntityType="Self.DENTIST" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PATIENT" EntityType="Self.PATIENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PAYMENT" EntityType="Self.PAYMENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SCHEDULED_SERVICE" EntityType="Self.SCHEDULED_SERVICE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SERVICE" EntityType="Self.SERVICE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VISIT" EntityType="Self.VISIT" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="APPOINTMENT$DENTISTAPPOINTMENT" Association="Self.APPOINTMENT$DENTISTAPPOINTMENT">
+            <End Role="DENTIST" EntitySet="DENTIST" />
+            <End Role="APPOINTMENT" EntitySet="APPOINTMENT" />
+          </AssociationSet>
+          <AssociationSet Name="APPOINTMENT$PATIENTAPPOINTMENT" Association="Self.APPOINTMENT$PATIENTAPPOINTMENT">
+            <End Role="PATIENT" EntitySet="PATIENT" />
+            <End Role="APPOINTMENT" EntitySet="APPOINTMENT" />
+          </AssociationSet>
+          <AssociationSet Name="COMPLETED_SERVICE$SERVICECOMPLETED_SERVICE" Association="Self.COMPLETED_SERVICE$SERVICECOMPLETED_SERVICE">
+            <End Role="SERVICE" EntitySet="SERVICE" />
+            <End Role="COMPLETED_SERVICE" EntitySet="COMPLETED_SERVICE" />
+          </AssociationSet>
+          <AssociationSet Name="COMPLETED_SERVICE$VISITCOMPLETED_SERVICE" Association="Self.COMPLETED_SERVICE$VISITCOMPLETED_SERVICE">
+            <End Role="VISIT" EntitySet="VISIT" />
+            <End Role="COMPLETED_SERVICE" EntitySet="COMPLETED_SERVICE" />
+          </AssociationSet>
+          <AssociationSet Name="PATIENT$ACCOUNTPATIENT" Association="Self.PATIENT$ACCOUNTPATIENT">
+            <End Role="ACCOUNT" EntitySet="ACCOUNT" />
+            <End Role="PATIENT" EntitySet="PATIENT" />
+          </AssociationSet>
+          <AssociationSet Name="PAYMENT$ACCOUNTPAYMENT" Association="Self.PAYMENT$ACCOUNTPAYMENT">
+            <End Role="ACCOUNT" EntitySet="ACCOUNT" />
+            <End Role="PAYMENT" EntitySet="PAYMENT" />
+          </AssociationSet>
+          <AssociationSet Name="SCHEDULED_SERVICE$APPOINTMENTSCHEDULED_SERVICE" Association="Self.SCHEDULED_SERVICE$APPOINTMENTSCHEDULED_SERVICE">
+            <End Role="APPOINTMENT" EntitySet="APPOINTMENT" />
+            <End Role="SCHEDULED_SERVICE" EntitySet="SCHEDULED_SERVICE" />
+          </AssociationSet>
+          <AssociationSet Name="SCHEDULED_SERVICE$SERVICESCHEDULED_SERVICE" Association="Self.SCHEDULED_SERVICE$SERVICESCHEDULED_SERVICE">
+            <End Role="SERVICE" EntitySet="SERVICE" />
+            <End Role="SCHEDULED_SERVICE" EntitySet="SCHEDULED_SERVICE" />
+          </AssociationSet>
+          <AssociationSet Name="VISIT$DENTISTVISIT" Association="Self.VISIT$DENTISTVISIT">
+            <End Role="DENTIST" EntitySet="DENTIST" />
+            <End Role="VISIT" EntitySet="VISIT" />
+          </AssociationSet>
+          <AssociationSet Name="VISIT$PATIENTVISIT" Association="Self.VISIT$PATIENTVISIT">
+            <End Role="PATIENT" EntitySet="PATIENT" />
+            <End Role="VISIT" EntitySet="VISIT" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="jqdentaldbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ACCOUNT">
+          <Key>
+            <PropertyRef Name="Account_ID" />
+          </Key>
+          <Property Name="Account_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Account_Balance" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="PATIENTs" Relationship="Self.PATIENT_ACCOUNTPATIENT" FromRole="ACCOUNT" ToRole="PATIENT" />
+          <NavigationProperty Name="PAYMENTs" Relationship="Self.PAYMENT_ACCOUNTPAYMENT" FromRole="ACCOUNT" ToRole="PAYMENT" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="APPOINTMENT">
+          <Key>
+            <PropertyRef Name="Appointment_ID" />
+          </Key>
+          <Property Name="Appointment_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Dentist_ID" Type="Int32" />
+          <Property Name="Patient_ID" Type="Int32" />
+          <Property Name="Appointment_Date" Type="DateTime" Precision="0" />
+          <Property Name="Appointment_Time" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="DENTIST" Relationship="Self.APPOINTMENT_DENTISTAPPOINTMENT" FromRole="APPOINTMENT" ToRole="DENTIST" />
+          <NavigationProperty Name="PATIENT" Relationship="Self.APPOINTMENT_PATIENTAPPOINTMENT" FromRole="APPOINTMENT" ToRole="PATIENT" />
+          <NavigationProperty Name="SCHEDULED_SERVICE" Relationship="Self.SCHEDULED_SERVICE_APPOINTMENTSCHEDULED_SERVICE" FromRole="APPOINTMENT" ToRole="SCHEDULED_SERVICE" />
+        </EntityType>
+        <EntityType Name="COMPLETED_SERVICE">
+          <Key>
+            <PropertyRef Name="Completed_Service_ID" />
+          </Key>
+          <Property Name="Completed_Service_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Service_ID" Type="Int32" />
+          <Property Name="Visit_ID" Type="Int32" />
+          <NavigationProperty Name="SERVICE" Relationship="Self.COMPLETED_SERVICE_SERVICECOMPLETED_SERVICE" FromRole="COMPLETED_SERVICE" ToRole="SERVICE" />
+          <NavigationProperty Name="VISIT" Relationship="Self.COMPLETED_SERVICE_VISITCOMPLETED_SERVICE" FromRole="COMPLETED_SERVICE" ToRole="VISIT" />
+        </EntityType>
+        <EntityType Name="DENTIST">
+          <Key>
+            <PropertyRef Name="Dentist_ID" />
+          </Key>
+          <Property Name="Dentist_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Dentist_First_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Dentist_Middle_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Dentist_Last_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Dentist_Join_Date" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="APPOINTMENTs" Relationship="Self.APPOINTMENT_DENTISTAPPOINTMENT" FromRole="DENTIST" ToRole="APPOINTMENT" />
+          <NavigationProperty Name="VISITs" Relationship="Self.VISIT_DENTISTVISIT" FromRole="DENTIST" ToRole="VISIT" />
+        </EntityType>
+        <EntityType Name="PATIENT">
+          <Key>
+            <PropertyRef Name="Patient_ID" />
+          </Key>
+          <Property Name="Patient_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Account_ID" Type="Int32" />
+          <Property Name="Patient_First_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Patient_Middle_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Patient_Last_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Patient_Street" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Patient_City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Patient_State" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Patient_Zip" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Patient_Phone_Primary" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Patient_Phone_Secondary" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Patient_SSN" Type="String" MaxLength="9" FixedLength="false" Unicode="true" />
+          <Property Name="Patient_DOB" Type="DateTime" Precision="0" />
+          <Property Name="Patient_Minor" Type="Boolean" />
+          <Property Name="Patient_Head_Of_House" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Patient_Allergies" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SSMA_TimeStamp" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="ACCOUNT" Relationship="Self.PATIENT_ACCOUNTPATIENT" FromRole="PATIENT" ToRole="ACCOUNT" />
+          <NavigationProperty Name="APPOINTMENTs" Relationship="Self.APPOINTMENT_PATIENTAPPOINTMENT" FromRole="PATIENT" ToRole="APPOINTMENT" />
+          <NavigationProperty Name="VISITs" Relationship="Self.VISIT_PATIENTVISIT" FromRole="PATIENT" ToRole="VISIT" />
+        </EntityType>
+        <EntityType Name="PAYMENT">
+          <Key>
+            <PropertyRef Name="Payment_ID" />
+          </Key>
+          <Property Name="Payment_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Payment_Date" Type="DateTime" Precision="0" />
+          <Property Name="Payment_Amount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Account_ID" Type="Int32" />
+          <NavigationProperty Name="ACCOUNT" Relationship="Self.PAYMENT_ACCOUNTPAYMENT" FromRole="PAYMENT" ToRole="ACCOUNT" />
+        </EntityType>
+        <EntityType Name="SCHEDULED_SERVICE">
+          <Key>
+            <PropertyRef Name="Scheduled_Service_ID" />
+          </Key>
+          <Property Name="Scheduled_Service_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Appointment_ID" Type="Int32" />
+          <Property Name="Service_ID" Type="Int32" />
+          <NavigationProperty Name="APPOINTMENT" Relationship="Self.SCHEDULED_SERVICE_APPOINTMENTSCHEDULED_SERVICE" FromRole="SCHEDULED_SERVICE" ToRole="APPOINTMENT" />
+          <NavigationProperty Name="SERVICE" Relationship="Self.SCHEDULED_SERVICE_SERVICESCHEDULED_SERVICE" FromRole="SCHEDULED_SERVICE" ToRole="SERVICE" />
+        </EntityType>
+        <EntityType Name="SERVICE">
+          <Key>
+            <PropertyRef Name="Service_ID" />
+          </Key>
+          <Property Name="Service_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Service_Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Service_Cost" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="COMPLETED_SERVICE" Relationship="Self.COMPLETED_SERVICE_SERVICECOMPLETED_SERVICE" FromRole="SERVICE" ToRole="COMPLETED_SERVICE" />
+          <NavigationProperty Name="SCHEDULED_SERVICE" Relationship="Self.SCHEDULED_SERVICE_SERVICESCHEDULED_SERVICE" FromRole="SERVICE" ToRole="SCHEDULED_SERVICE" />
+        </EntityType>
+        <EntityType Name="VISIT">
+          <Key>
+            <PropertyRef Name="Visit_ID" />
+          </Key>
+          <Property Name="Visit_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Dentist_ID" Type="Int32" />
+          <Property Name="Patient_ID" Type="Int32" />
+          <Property Name="Visit_Date" Type="DateTime" Precision="0" />
+          <Property Name="Visit_Time" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="COMPLETED_SERVICE" Relationship="Self.COMPLETED_SERVICE_VISITCOMPLETED_SERVICE" FromRole="VISIT" ToRole="COMPLETED_SERVICE" />
+          <NavigationProperty Name="DENTIST" Relationship="Self.VISIT_DENTISTVISIT" FromRole="VISIT" ToRole="DENTIST" />
+          <NavigationProperty Name="PATIENT" Relationship="Self.VISIT_PATIENTVISIT" FromRole="VISIT" ToRole="PATIENT" />
+        </EntityType>
+        <Association Name="PATIENT_ACCOUNTPATIENT">
+          <End Role="ACCOUNT" Type="Self.ACCOUNT" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PATIENT" Type="Self.PATIENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACCOUNT">
+              <PropertyRef Name="Account_ID" />
+            </Principal>
+            <Dependent Role="PATIENT">
+              <PropertyRef Name="Account_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PAYMENT_ACCOUNTPAYMENT">
+          <End Role="ACCOUNT" Type="Self.ACCOUNT" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PAYMENT" Type="Self.PAYMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACCOUNT">
+              <PropertyRef Name="Account_ID" />
+            </Principal>
+            <Dependent Role="PAYMENT">
+              <PropertyRef Name="Account_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="APPOINTMENT_DENTISTAPPOINTMENT">
+          <End Role="DENTIST" Type="Self.DENTIST" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="APPOINTMENT" Type="Self.APPOINTMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DENTIST">
+              <PropertyRef Name="Dentist_ID" />
+            </Principal>
+            <Dependent Role="APPOINTMENT">
+              <PropertyRef Name="Dentist_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="APPOINTMENT_PATIENTAPPOINTMENT">
+          <End Role="PATIENT" Type="Self.PATIENT" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="APPOINTMENT" Type="Self.APPOINTMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PATIENT">
+              <PropertyRef Name="Patient_ID" />
+            </Principal>
+            <Dependent Role="APPOINTMENT">
+              <PropertyRef Name="Patient_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SCHEDULED_SERVICE_APPOINTMENTSCHEDULED_SERVICE">
+          <End Role="APPOINTMENT" Type="Self.APPOINTMENT" Multiplicity="0..1">
+          </End>
+          <End Role="SCHEDULED_SERVICE" Type="Self.SCHEDULED_SERVICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="APPOINTMENT">
+              <PropertyRef Name="Appointment_ID" />
+            </Principal>
+            <Dependent Role="SCHEDULED_SERVICE">
+              <PropertyRef Name="Appointment_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="COMPLETED_SERVICE_SERVICECOMPLETED_SERVICE">
+          <End Role="SERVICE" Type="Self.SERVICE" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="COMPLETED_SERVICE" Type="Self.COMPLETED_SERVICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SERVICE">
+              <PropertyRef Name="Service_ID" />
+            </Principal>
+            <Dependent Role="COMPLETED_SERVICE">
+              <PropertyRef Name="Service_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="COMPLETED_SERVICE_VISITCOMPLETED_SERVICE">
+          <End Role="VISIT" Type="Self.VISIT" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="COMPLETED_SERVICE" Type="Self.COMPLETED_SERVICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VISIT">
+              <PropertyRef Name="Visit_ID" />
+            </Principal>
+            <Dependent Role="COMPLETED_SERVICE">
+              <PropertyRef Name="Visit_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="VISIT_DENTISTVISIT">
+          <End Role="DENTIST" Type="Self.DENTIST" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="VISIT" Type="Self.VISIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DENTIST">
+              <PropertyRef Name="Dentist_ID" />
+            </Principal>
+            <Dependent Role="VISIT">
+              <PropertyRef Name="Dentist_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="VISIT_PATIENTVISIT">
+          <End Role="PATIENT" Type="Self.PATIENT" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="VISIT" Type="Self.VISIT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PATIENT">
+              <PropertyRef Name="Patient_ID" />
+            </Principal>
+            <Dependent Role="VISIT">
+              <PropertyRef Name="Patient_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SCHEDULED_SERVICE_SERVICESCHEDULED_SERVICE">
+          <End Role="SERVICE" Type="Self.SERVICE" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SCHEDULED_SERVICE" Type="Self.SCHEDULED_SERVICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SERVICE">
+              <PropertyRef Name="Service_ID" />
+            </Principal>
+            <Dependent Role="SCHEDULED_SERVICE">
+              <PropertyRef Name="Service_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="jqdentaldbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ACCOUNTs" EntityType="Self.ACCOUNT" />
+          <EntitySet Name="APPOINTMENTs" EntityType="Self.APPOINTMENT" />
+          <EntitySet Name="COMPLETED_SERVICE" EntityType="Self.COMPLETED_SERVICE" />
+          <EntitySet Name="DENTISTs" EntityType="Self.DENTIST" />
+          <EntitySet Name="PATIENTs" EntityType="Self.PATIENT" />
+          <EntitySet Name="PAYMENTs" EntityType="Self.PAYMENT" />
+          <EntitySet Name="SCHEDULED_SERVICE" EntityType="Self.SCHEDULED_SERVICE" />
+          <EntitySet Name="SERVICEs" EntityType="Self.SERVICE" />
+          <EntitySet Name="VISITs" EntityType="Self.VISIT" />
+          <AssociationSet Name="PATIENT_ACCOUNTPATIENT" Association="Self.PATIENT_ACCOUNTPATIENT">
+            <End Role="ACCOUNT" EntitySet="ACCOUNTs" />
+            <End Role="PATIENT" EntitySet="PATIENTs" />
+          </AssociationSet>
+          <AssociationSet Name="PAYMENT_ACCOUNTPAYMENT" Association="Self.PAYMENT_ACCOUNTPAYMENT">
+            <End Role="ACCOUNT" EntitySet="ACCOUNTs" />
+            <End Role="PAYMENT" EntitySet="PAYMENTs" />
+          </AssociationSet>
+          <AssociationSet Name="APPOINTMENT_DENTISTAPPOINTMENT" Association="Self.APPOINTMENT_DENTISTAPPOINTMENT">
+            <End Role="DENTIST" EntitySet="DENTISTs" />
+            <End Role="APPOINTMENT" EntitySet="APPOINTMENTs" />
+          </AssociationSet>
+          <AssociationSet Name="APPOINTMENT_PATIENTAPPOINTMENT" Association="Self.APPOINTMENT_PATIENTAPPOINTMENT">
+            <End Role="PATIENT" EntitySet="PATIENTs" />
+            <End Role="APPOINTMENT" EntitySet="APPOINTMENTs" />
+          </AssociationSet>
+          <AssociationSet Name="SCHEDULED_SERVICE_APPOINTMENTSCHEDULED_SERVICE" Association="Self.SCHEDULED_SERVICE_APPOINTMENTSCHEDULED_SERVICE">
+            <End Role="APPOINTMENT" EntitySet="APPOINTMENTs" />
+            <End Role="SCHEDULED_SERVICE" EntitySet="SCHEDULED_SERVICE" />
+          </AssociationSet>
+          <AssociationSet Name="COMPLETED_SERVICE_SERVICECOMPLETED_SERVICE" Association="Self.COMPLETED_SERVICE_SERVICECOMPLETED_SERVICE">
+            <End Role="SERVICE" EntitySet="SERVICEs" />
+            <End Role="COMPLETED_SERVICE" EntitySet="COMPLETED_SERVICE" />
+          </AssociationSet>
+          <AssociationSet Name="COMPLETED_SERVICE_VISITCOMPLETED_SERVICE" Association="Self.COMPLETED_SERVICE_VISITCOMPLETED_SERVICE">
+            <End Role="VISIT" EntitySet="VISITs" />
+            <End Role="COMPLETED_SERVICE" EntitySet="COMPLETED_SERVICE" />
+          </AssociationSet>
+          <AssociationSet Name="VISIT_DENTISTVISIT" Association="Self.VISIT_DENTISTVISIT">
+            <End Role="DENTIST" EntitySet="DENTISTs" />
+            <End Role="VISIT" EntitySet="VISITs" />
+          </AssociationSet>
+          <AssociationSet Name="VISIT_PATIENTVISIT" Association="Self.VISIT_PATIENTVISIT">
+            <End Role="PATIENT" EntitySet="PATIENTs" />
+            <End Role="VISIT" EntitySet="VISITs" />
+          </AssociationSet>
+          <AssociationSet Name="SCHEDULED_SERVICE_SERVICESCHEDULED_SERVICE" Association="Self.SCHEDULED_SERVICE_SERVICESCHEDULED_SERVICE">
+            <End Role="SERVICE" EntitySet="SERVICEs" />
+            <End Role="SCHEDULED_SERVICE" EntitySet="SCHEDULED_SERVICE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="jqdentaldbModelStoreContainer" CdmEntityContainer="jqdentaldbEntities">
+          <EntitySetMapping Name="ACCOUNTs">
+            <EntityTypeMapping TypeName="jqdentaldbModel.ACCOUNT">
+              <MappingFragment StoreEntitySet="ACCOUNT">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Account_ID" ColumnName="Account_ID" />
+                <ScalarProperty Name="Account_Balance" ColumnName="Account_Balance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="APPOINTMENTs">
+            <EntityTypeMapping TypeName="jqdentaldbModel.APPOINTMENT">
+              <MappingFragment StoreEntitySet="APPOINTMENT">
+                <ScalarProperty Name="Appointment_ID" ColumnName="Appointment_ID" />
+                <ScalarProperty Name="Dentist_ID" ColumnName="Dentist_ID" />
+                <ScalarProperty Name="Patient_ID" ColumnName="Patient_ID" />
+                <ScalarProperty Name="Appointment_Date" ColumnName="Appointment_Date" />
+                <ScalarProperty Name="Appointment_Time" ColumnName="Appointment_Time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="COMPLETED_SERVICE">
+            <EntityTypeMapping TypeName="jqdentaldbModel.COMPLETED_SERVICE">
+              <MappingFragment StoreEntitySet="COMPLETED_SERVICE">
+                <ScalarProperty Name="Completed_Service_ID" ColumnName="Completed_Service_ID" />
+                <ScalarProperty Name="Service_ID" ColumnName="Service_ID" />
+                <ScalarProperty Name="Visit_ID" ColumnName="Visit_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DENTISTs">
+            <EntityTypeMapping TypeName="jqdentaldbModel.DENTIST">
+              <MappingFragment StoreEntitySet="DENTIST">
+                <ScalarProperty Name="Dentist_ID" ColumnName="Dentist_ID" />
+                <ScalarProperty Name="Dentist_First_Name" ColumnName="Dentist_First_Name" />
+                <ScalarProperty Name="Dentist_Middle_Name" ColumnName="Dentist_Middle_Name" />
+                <ScalarProperty Name="Dentist_Last_Name" ColumnName="Dentist_Last_Name" />
+                <ScalarProperty Name="Dentist_Join_Date" ColumnName="Dentist_Join_Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PATIENTs">
+            <EntityTypeMapping TypeName="jqdentaldbModel.PATIENT">
+              <MappingFragment StoreEntitySet="PATIENT">
+                <ScalarProperty Name="Patient_ID" ColumnName="Patient_ID" />
+                <ScalarProperty Name="Account_ID" ColumnName="Account_ID" />
+                <ScalarProperty Name="Patient_First_Name" ColumnName="Patient_First_Name" />
+                <ScalarProperty Name="Patient_Middle_Name" ColumnName="Patient_Middle_Name" />
+                <ScalarProperty Name="Patient_Last_Name" ColumnName="Patient_Last_Name" />
+                <ScalarProperty Name="Patient_Street" ColumnName="Patient_Street" />
+                <ScalarProperty Name="Patient_City" ColumnName="Patient_City" />
+                <ScalarProperty Name="Patient_State" ColumnName="Patient_State" />
+                <ScalarProperty Name="Patient_Zip" ColumnName="Patient_Zip" />
+                <ScalarProperty Name="Patient_Phone_Primary" ColumnName="Patient_Phone_Primary" />
+                <ScalarProperty Name="Patient_Phone_Secondary" ColumnName="Patient_Phone_Secondary" />
+                <ScalarProperty Name="Patient_SSN" ColumnName="Patient_SSN" />
+                <ScalarProperty Name="Patient_DOB" ColumnName="Patient_DOB" />
+                <ScalarProperty Name="Patient_Minor" ColumnName="Patient_Minor" />
+                <ScalarProperty Name="Patient_Head_Of_House" ColumnName="Patient_Head_Of_House" />
+                <ScalarProperty Name="Patient_Allergies" ColumnName="Patient_Allergies" />
+                <ScalarProperty Name="SSMA_TimeStamp" ColumnName="SSMA_TimeStamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PAYMENTs">
+            <EntityTypeMapping TypeName="jqdentaldbModel.PAYMENT">
+              <MappingFragment StoreEntitySet="PAYMENT">
+                <ScalarProperty Name="Payment_ID" ColumnName="Payment_ID" />
+                <ScalarProperty Name="Payment_Date" ColumnName="Payment_Date" />
+                <ScalarProperty Name="Payment_Amount" ColumnName="Payment_Amount" />
+                <ScalarProperty Name="Account_ID" ColumnName="Account_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SCHEDULED_SERVICE">
+            <EntityTypeMapping TypeName="jqdentaldbModel.SCHEDULED_SERVICE">
+              <MappingFragment StoreEntitySet="SCHEDULED_SERVICE">
+                <ScalarProperty Name="Scheduled_Service_ID" ColumnName="Scheduled_Service_ID" />
+                <ScalarProperty Name="Appointment_ID" ColumnName="Appointment_ID" />
+                <ScalarProperty Name="Service_ID" ColumnName="Service_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SERVICEs">
+            <EntityTypeMapping TypeName="jqdentaldbModel.SERVICE">
+              <MappingFragment StoreEntitySet="SERVICE">
+                <ScalarProperty Name="Service_ID" ColumnName="Service_ID" />
+                <ScalarProperty Name="Service_Description" ColumnName="Service_Description" />
+                <ScalarProperty Name="Service_Cost" ColumnName="Service_Cost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VISITs">
+            <EntityTypeMapping TypeName="jqdentaldbModel.VISIT">
+              <MappingFragment StoreEntitySet="VISIT">
+                <ScalarProperty Name="Visit_ID" ColumnName="Visit_ID" />
+                <ScalarProperty Name="Dentist_ID" ColumnName="Dentist_ID" />
+                <ScalarProperty Name="Patient_ID" ColumnName="Patient_ID" />
+                <ScalarProperty Name="Visit_Date" ColumnName="Visit_Date" />
+                <ScalarProperty Name="Visit_Time" ColumnName="Visit_Time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

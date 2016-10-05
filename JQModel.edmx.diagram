@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c9931ff123a64504b64a585c91e372a2" Name="Diagram1" ZoomLevel="101">
+        <EntityTypeShape EntityType="jqdentaldbModel.ACCOUNT" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="jqdentaldbModel.APPOINTMENT" Width="1.5" PointX="5.25" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="jqdentaldbModel.COMPLETED_SERVICE" Width="1.5" PointX="10.5" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="jqdentaldbModel.DENTIST" Width="1.5" PointX="3" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="jqdentaldbModel.PATIENT" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="jqdentaldbModel.PAYMENT" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="jqdentaldbModel.SCHEDULED_SERVICE" Width="1.5" PointX="10.5" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="jqdentaldbModel.SERVICE" Width="1.5" PointX="8.25" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="jqdentaldbModel.VISIT" Width="1.5" PointX="8.25" PointY="5.875" IsExpanded="true" />
+        <AssociationConnector Association="jqdentaldbModel.PATIENT_ACCOUNTPATIENT" ManuallyRouted="false" />
+        <AssociationConnector Association="jqdentaldbModel.PAYMENT_ACCOUNTPAYMENT" ManuallyRouted="false" />
+        <AssociationConnector Association="jqdentaldbModel.APPOINTMENT_DENTISTAPPOINTMENT" ManuallyRouted="false" />
+        <AssociationConnector Association="jqdentaldbModel.APPOINTMENT_PATIENTAPPOINTMENT" ManuallyRouted="false" />
+        <AssociationConnector Association="jqdentaldbModel.SCHEDULED_SERVICE_APPOINTMENTSCHEDULED_SERVICE" ManuallyRouted="false" />
+        <AssociationConnector Association="jqdentaldbModel.COMPLETED_SERVICE_SERVICECOMPLETED_SERVICE" ManuallyRouted="false" />
+        <AssociationConnector Association="jqdentaldbModel.COMPLETED_SERVICE_VISITCOMPLETED_SERVICE" ManuallyRouted="false" />
+        <AssociationConnector Association="jqdentaldbModel.VISIT_DENTISTVISIT" ManuallyRouted="false" />
+        <AssociationConnector Association="jqdentaldbModel.VISIT_PATIENTVISIT" ManuallyRouted="false" />
+        <AssociationConnector Association="jqdentaldbModel.SCHEDULED_SERVICE_SERVICESCHEDULED_SERVICE" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
